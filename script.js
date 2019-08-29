@@ -5,13 +5,13 @@ var radius = 7;
 var i = 0;
 var x = 0;
 var speed= 1;
-var delay = 3000;
+var delay = 100;
 var gradient = ctx.createLinearGradient(0, 0, 1300, 0);
 gradient.addColorStop("0", "yellow");
 gradient.addColorStop("0.2", "blue");
 gradient.addColorStop("1.0", "red");
 
-
+//coordinates for dots and lines
 var lineArray = [
 [7,120],
 [30,100],
@@ -72,7 +72,7 @@ var lineArray = [
 function main() {
 	drawDot();
 	drawStrokeAnim();
-	// must wait for stroke anim to finish!
+	// must wait for drawStrokeAnim to finish!
 	setTimeout("update()",delay*55);
 }
 
@@ -81,18 +81,25 @@ function update() {
 	drawDot();
 	drawStroke();
 	x = x+speed;
+	//check if bigger than canvas then move opposite direction
 	if (x+1000 >= c.width || x <= 0) {
 		speed = -speed;
 	}
 	if (click == true){
 		// x is back to starting point
 		x = 0;
-		// then clear
+		// then clear canvas
 		ctx.clearRect(0,0,c.width,c.height);
-	}
-	requestAnimationFrame(update);
+	}  //Stops the animation
+  	if (stopAnim == true) {
+    	cancelAnimationFrame(update);
+    	stopAnim = false;
+  } else {
+    	requestAnimationFrame(update);
+  }
 }
 
+// draws the circles in the canvas
 function drawDot(){
 	ctx.beginPath();
 	for (var i in lineArray){
@@ -102,6 +109,7 @@ function drawDot(){
 	ctx.fill();
 }
 
+//draws the lines in the canvas
 function drawStroke(){
 	ctx.beginPath();
 	for (var i in lineArray) {
@@ -112,6 +120,7 @@ function drawStroke(){
 	ctx.stroke();
 }
 
+// animation for lines
 function drawStrokeAnim(){
 	ctx.beginPath();
 	ctx.lineTo(lineArray[i][0],lineArray[i][1]);
@@ -124,7 +133,17 @@ function drawStrokeAnim(){
 		setTimeout("drawStrokeAnim()", delay);
 	}
 }
+//function for button to stop the animation
+var stopAnim = false;
+function stopAnima() {
+  if (stopAnim == false){
+    stopAnim = true;
+  } else{
+    stopAnim = false;
+  }
+}
 
+// function for button to clear the canvas
 var click = false;
 function clearCanvas(){
 	if (click == false) {
@@ -133,4 +152,5 @@ function clearCanvas(){
 		click = false;
 	}	
 }
+
 main();
