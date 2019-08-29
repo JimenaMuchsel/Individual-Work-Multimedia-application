@@ -5,7 +5,7 @@ var radius = 7;
 var i = 0;
 var x = 0;
 var speed= 1;
-var delay = 100;
+var delay = 3000;
 var gradient = ctx.createLinearGradient(0, 0, 1300, 0);
 gradient.addColorStop("0", "yellow");
 gradient.addColorStop("0.2", "blue");
